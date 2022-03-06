@@ -7,7 +7,7 @@ import { person } from './person';
 // POST
 // Neuer Nutzer
 export const POST = (url: string, body: person): any | null => {
-	const cookies = new Cookies();
+	// const cookies = new Cookies();
 
 	fetch(url, {
 		method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -32,7 +32,7 @@ export const POST = (url: string, body: person): any | null => {
 
 // GET
 // Daten über alle Nutzer einholen
-export const GET = (endpoint) => {
+export const GET = (endpoint: string) => {
 	const cookies = new Cookies();
 
 	request.get(endpoint)
@@ -41,18 +41,17 @@ export const GET = (endpoint) => {
 			'username=' + cookies.get('username'),
 			'token=' + cookies.get('token')
 		])
-		.then(success => {
-			onSuccess(success);
-		}, failure => {
-			onFailure(failure);
-		})
-		.then(success => {
-			
+		.then((json: any) => {
+			// Hat funktioiert, was machen wir?
+			console.log(json)
+		}, (failure: any) => {
+			// Fail, was machen wir? 
+			console.error(failure)
 		});
 }
 
 // DELETE
-export const DELETE = (endpoint, onSuccess, onFailure) => {
+export const DELETE = (endpoint: string, onSuccess: any, onFailure: any) => {
 	const cookies = new Cookies();
 
 	request.delete(endpoint)
@@ -61,15 +60,17 @@ export const DELETE = (endpoint, onSuccess, onFailure) => {
 			'username=' + cookies.get('username'),
 			'token=' + cookies.get('token')
 		])
-		.then(success => {
-			onSuccess(success);
-		}, failure => {
-			onFailure(failure);
+		.then((success: any) => {
+			// Hat funktioiert, was machen wir?
+			console.log(success)
+		}, (failure: any) => {
+			// Fail, was machen wir? 
+			console.error(failure)
 		});
 }
 
 // PATCH
-export const PATCH = (endpoint, onSuccess, onFailure) => {
+export const PATCH = (endpoint: any, onSuccess: any, onFailure: any) => {
 	const cookies = new Cookies();
 
 	request.patch(endpoint)
@@ -78,9 +79,11 @@ export const PATCH = (endpoint, onSuccess, onFailure) => {
 			'username=' + cookies.get('username'),
 			'token=' + cookies.get('token')
 		])
-		.then(success => {
-			onSuccess(success);
-		}, failure => {
-			onFailure(failure);
+		.then((success: any) => {
+			// Hat funktioiert, was machen wir?
+			console.log(success)
+		}, (failure: any) => {
+			// Fail, was machen wir? 
+			console.error(failure)
 		});
 }
