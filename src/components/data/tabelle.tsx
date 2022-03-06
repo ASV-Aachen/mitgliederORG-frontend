@@ -17,10 +17,17 @@ import {
     TableToolbarSearch,
 } from 'carbon-components-react';
 import { GET } from '../utils/connect';
+import { userData } from "./UserData"
+import { ProgressBar } from 'react-bootstrap';
 
-export function AllUsersTabelle(){
 
-    const [data, setData] = useState< | null>(null);
+export function AllUsersTabelle(props: {
+  newMember: Function
+  rows: any
+  headers: any
+}){
+
+    const [data, setData] = useState< userData| null>(null);
     const [loading, setloading] = useState(true);
   
 
@@ -29,48 +36,41 @@ export function AllUsersTabelle(){
         if(temp === null){
 
         }
-        setData(GET("/"))
       }, [data]);
     
     
 
 
     return (
-    <DataTable rows={rows} headers={headers}>
-        {({
-            rows,
-            headers,
-            getHeaderProps,
-            getRowProps,
-            getTableProps,
-            onInputChange,
-        }) => (
+    <DataTable rows={props.rows} headers={props.headers}>
+      {
+      ({ rows, headers, getHeaderProps, getRowProps, getTableProps, onInputChange }) => (
      <TableContainer title="DataTable" description="With filtering">
        <TableToolbar>
          <TableToolbarContent>
            {/* pass in `onInputChange` change here to make filtering work */}
            <TableToolbarSearch onChange={onInputChange} />
-           <Button onClick={probs.NewMember}>Neues Mitglied</Button>
+           <Button/>
          </TableToolbarContent>
        </TableToolbar>
        <Table {...getTableProps()}>
          <TableHead>
            <TableRow>
-             {headers.map((header) => (
+             {headers.map((header: { key: React.Key | null | undefined; header: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
                <TableHeader key={header.key} {...getHeaderProps({ header })}>
                  {header.header}
                </TableHeader>
              ))}
            </TableRow>
          </TableHead>
-         <TableBody>
-           {rows.map((row) => (
+         <TableBody
+           {...rows.map((row: { id: React.Key | null | undefined; cells: any[]; }) => (
              <TableRow key={row.id} {...getRowProps({ row })}>
-               {row.cells.map((cell) => (
+               {row.cells.map((cell: { id: React.Key | null | undefined; value: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
                  <TableCell key={cell.id}>{cell.value}</TableCell>
                ))}
              </TableRow>
-           ))}
+           ))}>
          </TableBody>
         </Table>
       </TableContainer>
