@@ -1,5 +1,5 @@
 // Header der Seite
-import { HeaderGlobalAction, HeaderGlobalBar, HeaderMenu, HeaderNavigation, HeaderMenuItem, HeaderName, Header } from "carbon-components-react";
+import { HeaderNavigation, HeaderMenuItem, HeaderName, Header } from "carbon-components-react";
 import React, {Fragment, useState} from "react";
 import { AppSwitcher20 } from '@carbon/icons-react';
 
@@ -11,7 +11,7 @@ export function AppHeader(props: {
 
     return (
         <Fragment>
-            <Header>
+            <div aria-label="ASV Aachen" className='headerFile'>
                 <HeaderMenuItem>
                     <img
                         alt=""
@@ -21,7 +21,7 @@ export function AppHeader(props: {
                         className="d-inline-block align-top"
                     />
                 </HeaderMenuItem>
-                <HeaderName href="#home" prefix="ASV">
+                <HeaderName prefix="ASV">
                     Mitglieder Verwaltung
                 </HeaderName>
                 <HeaderMenuItem >
@@ -30,7 +30,7 @@ export function AppHeader(props: {
                 <HeaderNavigation aria-label="IBM [Platform]">
                     <HeaderMenuItem href="#home">Zurück zur Website</HeaderMenuItem>
                 </HeaderNavigation>
-            </Header>
+            </div>
         </Fragment>
     )
     
