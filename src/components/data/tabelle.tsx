@@ -19,12 +19,14 @@ import {
     TableToolbarContent,
     TableExpandHeader,
     TableToolbarSearch,
+    OverflowMenu,
+    OverflowMenuItem,
 } from 'carbon-components-react';
 import { GET } from '../utils/connect';
 import { userData } from "./UserData"
 import { ProgressBar } from 'react-bootstrap';
 import { Data } from '../interface/ApiData';
-import { transformData, UserData } from '../interface/UserData';
+import { transformData, UserData, UserInfo } from '../interface/UserData';
 import { testdata } from './testdata';
 
 
@@ -116,6 +118,7 @@ export function AllUsersTabelle(){
                   {header.header}
                 </TableHeader>
               ))}
+              <TableExpandHeader id="expand" />
             </TableRow>
           </TableHead>
          <TableBody>
@@ -125,10 +128,15 @@ export function AllUsersTabelle(){
                   {row.cells.map((cell) => (
                     <TableCell key={cell.id}>{cell.value}</TableCell>
                   ))}
+                  <TableCell>
+                    <OverflowMenu size="sm" light flipped>
+                      <OverflowMenuItem itemText="bearbeiten"/>
+                      <OverflowMenuItem itemText="löschen"/>
+                    </OverflowMenu>
+                  </TableCell>
                 </TableExpandRow>
-                <TableExpandedRow colSpan={headers.length + 1}>
-                  <h6>Expandable row content</h6>
-                  <div>Description here</div>
+                <TableExpandedRow colSpan={headers.length + 2}>
+                  <UserInfo person={row}/>
                 </TableExpandedRow>
               </React.Fragment>
             ))}
