@@ -8,11 +8,6 @@ export var data: [String]
 
 function App() {
 
-  const newMember = () => {
-    // TODO
-
-  }
-
   return (
     <Fragment>
       <header>
@@ -20,7 +15,7 @@ function App() {
       </header>
       <body className="App">    
         <div className='body'>
-          {/* <AllUsersTabelle newMember={newMember} rows={undefined} headers={undefined}/> */}
+          <AllUsersTabelle/>
         </div>
       </body>
       <footer>
