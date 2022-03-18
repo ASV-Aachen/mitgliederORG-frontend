@@ -5,72 +5,133 @@ import React, { useEffect, useState } from 'react';
 import {
     Button,
     DataTable,
+    DataTableSkeleton,
     Table,
     TableBody,
     TableCell,
     TableContainer,
+    TableExpandedRow,
+    TableExpandRow,
     TableHead,
     TableHeader,
     TableRow,
     TableToolbar,
     TableToolbarContent,
+    TableExpandHeader,
     TableToolbarSearch,
 } from 'carbon-components-react';
 import { GET } from '../utils/connect';
 import { userData } from "./UserData"
 import { ProgressBar } from 'react-bootstrap';
+import { Data } from '../interface/ApiData';
+import { transformData, UserData } from '../interface/UserData';
+import { testdata } from './testdata';
 
 
-export function AllUsersTabelle(props: {
-  newMember: Function
-  rows: any
-  headers: any
-}){
+export function AllUsersTabelle(){
 
-    const [data, setData] = useState< userData| null>(null);
-    const [loading, setloading] = useState(true);
+    // const [data, setData] = useState< UserData| null>(null);
+    // const [loading, setloading] = useState(true);
   
+    // Designing Purposes
+    var data = transformData(testdata)
+    var loading = false
 
-    useEffect(() => {
-        var temp = GET("/api")
-        if(temp === null){
+    // useEffect(() => {
+    //     fetch(`/api`)
+    //       .then((response) => {
+    //         if(response.ok){
+    //           return response.json()
+    //         }
+    //         throw response
+    //       })
+    //       .then((json: Data)=>{
+    //         setData(transformData(json))
+    //         setloading(false);
+    //       })
+    //       .catch((error) => {
+    //         console.error("Error fetching data: ", error);
+    //         setloading(false);
+    //       });  
 
-        }
-      }, [data]);
+    //   }, [data]);
     
-    
+      if (loading){
+        return (
+            <DataTableSkeleton />
+        );
+      }
+  
+    var temp = [
+      ["id","ID"],
+      ["Email","E-Mail"],
+      ["first_name","Vorname"],
+      ["last_name","Nachname"],
+      ["username","UserName"],
+    ]
+
+    var headers: any = [];
+
+    temp.forEach((element) => {
+      headers.push({
+        key: element[0],
+        header: element[1],
+      });
+    });
+
 
 
     return (
-    <DataTable rows={props.rows} headers={props.headers}>
+    <DataTable rows={data!.data} headers={headers}>
       {
       ({ rows, headers, getHeaderProps, getRowProps, getTableProps, onInputChange }) => (
-     <TableContainer title="DataTable" description="With filtering">
+     <TableContainer>
        <TableToolbar>
          <TableToolbarContent>
            {/* pass in `onInputChange` change here to make filtering work */}
-           <TableToolbarSearch onChange={onInputChange} />
-           <Button/>
+           <TableToolbarSearch
+              onChange={onInputChange}
+              onFocus={(event, handleExpand) => {
+                handleExpand(event, true);
+              }}
+              onBlur={(event, handleExpand) => {
+                const { value } = event.target;
+                if (!value) {
+                  handleExpand(event, false);
+                }
+              }}
+            />
+           <Button>Neuer User</Button>
          </TableToolbarContent>
        </TableToolbar>
        <Table {...getTableProps()}>
-         <TableHead>
-           <TableRow>
-             {headers.map((header: { key: React.Key | null | undefined; header: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
-               <TableHeader key={header.key} {...getHeaderProps({ header })}>
-                 {header.header}
-               </TableHeader>
-             ))}
-           </TableRow>
-         </TableHead>
-         <TableBody
-           {...rows.map((row: { id: React.Key | null | undefined; cells: any[]; }) => (
-             <TableRow key={row.id} {...getRowProps({ row })}>
-               {row.cells.map((cell: { id: React.Key | null | undefined; value: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
-                 <TableCell key={cell.id}>{cell.value}</TableCell>
-               ))}
-             </TableRow>
-           ))}>
+       <TableHead>
+            <TableRow>
+              <TableExpandHeader id="expand" />
+              {headers.map((header, i) => (
+                <TableHeader
+                  id={header.header}
+                  key={i}
+                  {...getHeaderProps({ header })}>
+                  {header.header}
+                </TableHeader>
+              ))}
+            </TableRow>
+          </TableHead>
+         <TableBody>
+          {rows.map((row) => (
+              <React.Fragment key={row.id}>
+                <TableExpandRow {...getRowProps({ row })}>
+                  {row.cells.map((cell) => (
+                    <TableCell key={cell.id}>{cell.value}</TableCell>
+                  ))}
+                </TableExpandRow>
+                <TableExpandedRow colSpan={headers.length + 1}>
+                  <h6>Expandable row content</h6>
+                  <div>Description here</div>
+                </TableExpandedRow>
+              </React.Fragment>
+            ))}
          </TableBody>
         </Table>
       </TableContainer>
