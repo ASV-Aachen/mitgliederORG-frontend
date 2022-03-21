@@ -1,4 +1,4 @@
-import { person } from "../utils/person"
+import { person } from "../interface/person"
 
 class row{
 
