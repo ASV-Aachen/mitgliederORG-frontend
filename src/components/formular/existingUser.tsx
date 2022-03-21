@@ -1,3 +1,0 @@
-// Modal zum editieren
-
-export {}

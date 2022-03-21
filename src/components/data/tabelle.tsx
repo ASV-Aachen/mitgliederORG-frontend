@@ -22,11 +22,8 @@ import {
     OverflowMenu,
     OverflowMenuItem,
 } from 'carbon-components-react';
-import { GET } from '../utils/connect';
-import { userData } from "./UserData"
-import { ProgressBar } from 'react-bootstrap';
-import { Data } from '../interface/ApiData';
-import { transformData, UserData, UserInfo } from '../interface/UserData';
+
+import { transformData, UserData } from '../interface/UserData';
 import { testdata } from './testdata';
 
 
@@ -65,7 +62,7 @@ export function AllUsersTabelle(){
       }
   
     var temp = [
-      ["id","ID"],
+      ["status","Status"],
       ["Email","E-Mail"],
       ["first_name","Vorname"],
       ["last_name","Nachname"],
@@ -84,7 +81,7 @@ export function AllUsersTabelle(){
 
 
     return (
-    <DataTable rows={data!.data} headers={headers}>
+    <DataTable rows={data!.data} headers={headers} isSortable>
       {
       ({ rows, headers, getHeaderProps, getRowProps, getTableProps, onInputChange }) => (
      <TableContainer>
@@ -109,7 +106,6 @@ export function AllUsersTabelle(){
        <Table {...getTableProps()}>
        <TableHead>
             <TableRow>
-              <TableExpandHeader id="expand" />
               {headers.map((header, i) => (
                 <TableHeader
                   id={header.header}
@@ -122,23 +118,18 @@ export function AllUsersTabelle(){
             </TableRow>
           </TableHead>
          <TableBody>
-          {rows.map((row) => (
-              <React.Fragment key={row.id}>
-                <TableExpandRow {...getRowProps({ row })}>
-                  {row.cells.map((cell) => (
-                    <TableCell key={cell.id}>{cell.value}</TableCell>
-                  ))}
+         {rows.map((row) => (
+              <TableRow key={row.id} {...getRowProps({ row })}>
+                {row.cells.map((cell) => (
+                  <TableCell key={cell.id}>{cell.value}</TableCell>
+                ))}
                   <TableCell>
                     <OverflowMenu size="sm" light flipped>
                       <OverflowMenuItem itemText="bearbeiten"/>
                       <OverflowMenuItem itemText="löschen"/>
                     </OverflowMenu>
                   </TableCell>
-                </TableExpandRow>
-                <TableExpandedRow colSpan={headers.length + 2}>
-                  <UserInfo person={row}/>
-                </TableExpandedRow>
-              </React.Fragment>
+              </TableRow>
             ))}
          </TableBody>
         </Table>
