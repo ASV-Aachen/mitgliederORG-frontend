@@ -1,6 +1,3 @@
-import userEvent from "@testing-library/user-event";
-import { Column, Grid, Row, Tag } from "carbon-components-react";
-import { Fragment } from "react";
 import { Arbeitsstunden, Data, Keycloak, Website } from "./ApiData";
 
 export interface User{
