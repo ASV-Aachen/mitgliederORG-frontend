@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import request from 'superagent';
 import Cookies from 'universal-cookie';
-import { person } from './person';
+import { person } from '../interface/person';
 // Connect to the Backend Service
 
 // POST
 // Neuer Nutzer
-export const POST = (url: string, body: person): any | null => {
+export const POST = (url: string, body: person, image: File|null): any | null => {
 	// const cookies = new Cookies();
+
+	var data = new FormData()
+	data.append('json', JSON.stringify(body))
+	if (image !== null){
+		data.append('image', image)
+	}
 
 	fetch(url, {
 		method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -22,12 +28,13 @@ export const POST = (url: string, body: person): any | null => {
 		body: JSON.stringify(body) // body data type must match "Content-Type" header
 	  })
 	.then((json: any) => {
-			
+		
 	})
 	.then((error) => {
 		console.error("Coudln't POST: ", error)
-		return null
+		return (error)
 	})
+	return true
 }
 
 // GET
