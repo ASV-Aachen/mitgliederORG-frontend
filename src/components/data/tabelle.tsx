@@ -25,6 +25,9 @@ import {
 
 import { transformData, UserData } from '../interface/UserData';
 import { testdata } from './testdata';
+import { NewUser_StateManager } from '../formular/newUser';
+import { person } from '../interface/person';
+import { POST } from '../utils/connect';
 
 
 export function AllUsersTabelle(){
@@ -54,12 +57,18 @@ export function AllUsersTabelle(){
     //       });  
 
     //   }, [data]);
+
+
+    var postFunction = (url: string, body: person, image: File|null) =>{
+      POST(url, body, image)
+      
+    }
     
-      if (loading){
-        return (
-            <DataTableSkeleton />
-        );
-      }
+    if (loading){
+      return (
+          <DataTableSkeleton />
+      );
+    }
   
     var temp = [
       ["status","Status"],
@@ -100,7 +109,8 @@ export function AllUsersTabelle(){
                 }
               }}
             />
-           <Button>Neuer User</Button>
+           {/* <Button>Neuer User</Button> */}
+           <NewUser_StateManager/>
          </TableToolbarContent>
        </TableToolbar>
        <Table {...getTableProps()}>
