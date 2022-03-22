@@ -21,6 +21,8 @@ import {
     TableToolbarSearch,
     OverflowMenu,
     OverflowMenuItem,
+    TableToolbarAction,
+    TableToolbarMenu,
 } from 'carbon-components-react';
 
 import { transformData, UserData } from '../interface/UserData';
@@ -28,41 +30,40 @@ import { testdata } from './testdata';
 import { NewUser_StateManager } from '../formular/newUser';
 import { person } from '../interface/person';
 import { POST } from '../utils/connect';
+import { Data } from '../interface/ApiData';
 
 
 export function AllUsersTabelle(){
 
-    // const [data, setData] = useState< UserData| null>(null);
-    // const [loading, setloading] = useState(true);
+    const [data, setData] = useState< UserData| null>(null);
+    const [loading, setloading] = useState(true);
   
     // Designing Purposes
-    var data = transformData(testdata)
-    var loading = false
+    // var data = transformData(testdata)
+    // var loading = false
+    // var setloading= (loading: boolean) => {
 
-    // useEffect(() => {
-    //     fetch(`/api`)
-    //       .then((response) => {
-    //         if(response.ok){
-    //           return response.json()
-    //         }
-    //         throw response
-    //       })
-    //       .then((json: Data)=>{
-    //         setData(transformData(json))
-    //         setloading(false);
-    //       })
-    //       .catch((error) => {
-    //         console.error("Error fetching data: ", error);
-    //         setloading(false);
-    //       });  
+    // }
 
-    //   }, [data]);
+    useEffect(() => {
+        fetch(`/api`)
+          .then((response) => {
+            if(response.ok){
+              return response.json()
+            }
+            throw response
+          })
+          .then((json: Data)=>{
+            setData(transformData(json))
+            setloading(false);
+          })
+          .catch((error) => {
+            console.error("Error fetching data: ", error);
+            setloading(false);
+          });  
 
+      }, [data, loading]);
 
-    var postFunction = (url: string, body: person, image: File|null) =>{
-      POST(url, body, image)
-      
-    }
     
     if (loading){
       return (
@@ -76,6 +77,7 @@ export function AllUsersTabelle(){
       ["first_name","Vorname"],
       ["last_name","Nachname"],
       ["username","UserName"],
+      ["has_arbeitsstundenAccount", "Arbeitsstunden Account"]
     ]
 
     var headers: any = [];
@@ -110,7 +112,15 @@ export function AllUsersTabelle(){
               }}
             />
            {/* <Button>Neuer User</Button> */}
-           <NewUser_StateManager/>
+           <TableToolbarMenu light>
+              <TableToolbarAction>
+                Accounts syncen
+              </TableToolbarAction>
+              <TableToolbarAction>
+                CSV Datei importieren
+              </TableToolbarAction>
+            </TableToolbarMenu>
+           <NewUser_StateManager setloading={setloading}/>
          </TableToolbarContent>
        </TableToolbar>
        <Table {...getTableProps()}>
@@ -135,7 +145,6 @@ export function AllUsersTabelle(){
                 ))}
                   <TableCell>
                     <OverflowMenu size="sm" light flipped>
-                      <OverflowMenuItem itemText="bearbeiten"/>
                       <OverflowMenuItem itemText="löschen"/>
                     </OverflowMenu>
                   </TableCell>
