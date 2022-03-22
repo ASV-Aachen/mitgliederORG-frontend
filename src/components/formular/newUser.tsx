@@ -7,7 +7,7 @@ import { person } from "../interface/person";
 import { POST } from "../utils/connect";
 import { ErrorModal } from "../utils/modals";
 
-
+const mailRegex = "/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
 
 function NewUser_Form(probs:{
     setOpen: Function
@@ -18,32 +18,40 @@ function NewUser_Form(probs:{
     var first_name: string      = ""
     var last_name: string       = ""
     var entryDate: string       = ""
-    var status: string          = ""
+    var status: string          = "1"
     var image: File | null     
 
     function doStuff(){
-        
-        // send to backend
-        var data: person = {
-            mail: mail,
-            first_name: first_name,
-            last_name: last_name,
-            entryDate: entryDate,
-            status: status
-        }
 
-        var success = POST("/api", data, image)
-
-        if (success === true){
-            // Success
-            probs.setOpen(false)
-            probs.setloading(true)
+        if(
+            (mail === "" && mail.match(mailRegex)) ||
+            first_name === "" ||
+            last_name === ""
+        ){
 
         }else{
-            // error
-            
-            probs.setOpen(false)
-            ErrorModal(success)
+            // send to backend
+            var data: person = {
+                mail: mail,
+                first_name: first_name,
+                last_name: last_name,
+                entryDate: entryDate,
+                status: status
+            }
+    
+            var success = POST("/mitgliederDB/api", data, image)
+    
+            if (success === true){
+                // Success
+                probs.setOpen(false)
+                probs.setloading(true)
+    
+            }else{
+                // error
+                
+                probs.setOpen(false)
+                ErrorModal(success)
+            }
         }
     }
 
@@ -51,6 +59,7 @@ function NewUser_Form(probs:{
         <Form>
             <TextInput
                 data-modal-primary-focus
+                type="mail"
                 id="mail"
                 labelText="E-Mail"
                 placeholder=""

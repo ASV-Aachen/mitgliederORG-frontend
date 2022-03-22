@@ -31,12 +31,14 @@ import { NewUser_StateManager } from '../formular/newUser';
 import { person } from '../interface/person';
 import { POST } from '../utils/connect';
 import { Data } from '../interface/ApiData';
+import { ErrorModal } from '../utils/modals';
 
 
 export function AllUsersTabelle(){
 
     const [data, setData] = useState< UserData| null>(null);
     const [loading, setloading] = useState(true);
+    const [failed, setFailed] = useState <string | null>(null);
   
     // Designing Purposes
     // var data = transformData(testdata)
@@ -46,7 +48,7 @@ export function AllUsersTabelle(){
     // }
 
     useEffect(() => {
-        fetch(`/api`)
+        fetch(`/mitgliederDB/api`)
           .then((response) => {
             if(response.ok){
               return response.json()
@@ -59,12 +61,19 @@ export function AllUsersTabelle(){
           })
           .catch((error) => {
             console.error("Error fetching data: ", error);
-            setloading(false);
+            if(error.status === 401){
+              setFailed("Nicht authorized")
+            }else{
+              setFailed("Error " + error.status + "-" + error.statusText)
+            }
           });  
 
-      }, [data, loading]);
+      }, [loading]);
 
-    
+    if (failed !== null){
+      return ErrorModal(failed)
+    }
+
     if (loading){
       return (
           <DataTableSkeleton />
