@@ -7,6 +7,7 @@ export interface User{
     first_name:         string
     last_name:          string
     status:             string
+    has_arbeitsstundenAccount: string
 
     website:            Website
     arbeitsstuden:      Arbeitsstunden | undefined
@@ -54,7 +55,8 @@ export function transformData(json:Data): UserData {
                 Email: erg_key.Email,
                 username: erg_key.username,
                 first_name: erg_key.first_name,
-                last_name: erg_key.last_name
+                last_name: erg_key.last_name,
+                has_arbeitsstundenAccount: erg_arbeitsstunden !== undefined ? "✅": "🚫"
             }
 
             if (!site.is_active && !erg_key.enabled ){

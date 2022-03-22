@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "src/index.tsx",
+  "homepage": "/mitgliederDB/",
   "dependencies": {
     "@carbon/icons-react": "^10.47.0",
     "@testing-library/jest-dom": "^5.16.2",

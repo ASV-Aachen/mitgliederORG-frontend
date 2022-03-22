@@ -11,6 +11,7 @@ import { ErrorModal } from "../utils/modals";
 
 function NewUser_Form(probs:{
     setOpen: Function
+    setloading: Function
 }){
 
     var mail: string            = ""
@@ -36,6 +37,7 @@ function NewUser_Form(probs:{
         if (success === true){
             // Success
             probs.setOpen(false)
+            probs.setloading(true)
 
         }else{
             // error
@@ -122,6 +124,7 @@ function NewUser_Form(probs:{
 
 function NewUser_Modal(probs: {
     ModalStateManager
+    setloading: Function
 }) {
 
     return (
@@ -148,14 +151,18 @@ function NewUser_Modal(probs: {
               Sollte der Nutzer nach 24 Stunden keine Mail erhalten haben, wende dich bitte an einen Admin.
             </p>
             
-            <NewUser_Form setOpen={setOpen}/>
+            <NewUser_Form setOpen={setOpen} setloading={probs.setloading}/>
           </Modal>
         )}
       </probs.ModalStateManager>
     )
 }
 
-export const NewUser_StateManager = () => {
+export const NewUser_StateManager = (
+    probs:{
+        setloading: Function
+    }
+) => {
     /**
      * Simple state manager for modals.
      */
@@ -177,7 +184,7 @@ export const NewUser_StateManager = () => {
       );
     };
     return (
-      <NewUser_Modal ModalStateManager={ModalStateManager}></NewUser_Modal>
+      <NewUser_Modal ModalStateManager={ModalStateManager} setloading={probs.setloading}></NewUser_Modal>
     );
   };
   
