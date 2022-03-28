@@ -15,7 +15,7 @@ export function AppHeader(props: {
                 <HeaderMenuItem>
                     <img
                         alt=""
-                        src="/logo_offiziell_17_-04.png"
+                        src="/mitgliederDB/logo_offiziell_17_-04.png"
                         // width="30"
                         height="30"
                         className="d-inline-block align-top"
