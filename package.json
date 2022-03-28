@@ -13,6 +13,7 @@
     "carbon-components": "^10.53.0",
     "carbon-components-react": "^7.53.0",
     "carbon-icons": "^7.0.7",
+    "keycloak-js": "^16.1.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-dom": "^17.0.2",
@@ -47,6 +48,8 @@
   },
   "devDependencies": {
     "@types/carbon-components-react": "^7.49.0",
+    "@types/react": "^17.0.43",
     "@types/superagent": "^4.1.15"
-  }
+  },
+  "proxy": "https://localhost/mitgliederDB"
 }
