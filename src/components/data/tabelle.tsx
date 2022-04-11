@@ -32,6 +32,7 @@ import { person } from '../interface/person';
 import { POST } from '../utils/connect';
 import { Data } from '../interface/ApiData';
 import { ErrorModal } from '../utils/modals';
+import Cookies from 'universal-cookie';
 
 
 export function AllUsersTabelle(){
@@ -48,7 +49,10 @@ export function AllUsersTabelle(){
     // }
 
     useEffect(() => {
-        fetch(`/mitgliederDB/api`)
+        fetch(`/mitgliederDB/api`, {
+          credentials: "same-origin",
+          method: 'GET'
+        })
           .then((response) => {
             if(response.ok){
               return response.json()
