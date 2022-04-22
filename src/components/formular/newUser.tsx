@@ -24,7 +24,8 @@ function NewUser_Form(probs:{
     function doStuff(){
 
         if(
-            (mail === "" && mail.match(mailRegex)) ||
+            (mail === "" || 
+            mail.match(mailRegex)) ||
             first_name === "" ||
             last_name === ""
         ){
@@ -39,13 +40,13 @@ function NewUser_Form(probs:{
                 status: status
             }
     
-            var success = POST("/mitgliederDB/api", data, image)
+            var success = POST("/api/addMember", data, image===undefined?null : image)
     
             if (success === true){
                 // Success
                 probs.setOpen(false)
                 probs.setloading(true)
-    
+                
             }else{
                 // error
                 
@@ -85,12 +86,15 @@ function NewUser_Form(probs:{
                 onChange = {(event) => last_name = event.target.value}
                 required
             />
-                <DatePicker datePickerType="single">
+                <DatePicker datePickerType="single" dateFormat="y-m-d" onChange={(event: Date[]) => entryDate = transformDate(event[0])}>
                     <DatePickerInput
-                        placeholder="mm/dd/yyyy"
+                        placeholder="yyyy-mm-dd"
                         labelText="Eingetreten am"
                         id="entryDate"
-                        onChange = {(event) => entryDate = event.target.value}
+                        onChange = {(event) => {
+                            console.log("CHANGE")
+                            console.log(event.target)
+                            entryDate = event.target.value}}
                     />
                     </DatePicker>
                 <Select 
@@ -197,3 +201,7 @@ export const NewUser_StateManager = (
     );
   };
   
+function transformDate(arg0: Date): string {
+    return arg0.toLocaleDateString('en-CA')
+}
+
