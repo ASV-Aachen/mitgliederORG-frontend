@@ -29,7 +29,7 @@ import { transformData, UserData } from '../interface/UserData';
 import { testdata } from './testdata';
 import { NewUser_StateManager } from '../formular/newUser';
 import { person } from '../interface/person';
-import { POST } from '../utils/connect';
+import { PATCH, POST } from '../utils/connect';
 import { Data } from '../interface/ApiData';
 import { ErrorModal } from '../utils/modals';
 import Cookies from 'universal-cookie';
@@ -126,12 +126,15 @@ export function AllUsersTabelle(){
             />
            {/* <Button>Neuer User</Button> */}
            <TableToolbarMenu light>
-              <TableToolbarAction>
+              <TableToolbarAction onClick={()=> {
+                PATCH("/mitgliederDB/api/", setloading, null)
+              }}>
                 Accounts syncen
               </TableToolbarAction>
-              <TableToolbarAction>
+              {/* TODO: */}
+              {/* <TableToolbarAction>
                 CSV Datei importieren
-              </TableToolbarAction>
+              </TableToolbarAction> */}
             </TableToolbarMenu>
            <NewUser_StateManager setloading={setloading}/>
          </TableToolbarContent>
