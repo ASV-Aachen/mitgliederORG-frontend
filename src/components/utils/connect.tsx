@@ -7,25 +7,30 @@ import { person } from '../interface/person';
 // POST
 // Neuer Nutzer
 export const POST = (url: string, body: person, image: File|null): any | null => {
-	// const cookies = new Cookies();
+	const cookies = new Cookies();
+
+	var bearer = cookies.get('token')
 
 	var data = new FormData()
-	data.append('json', JSON.stringify(body))
+	data.append('mail', body.mail)
+	data.append('first_name', body.first_name)
+	data.append('last_name', body.last_name)
+	data.append('entryDate', body.entryDate)
+	data.append('status', body.status)
+
 	if (image !== null){
-		data.append('image', image)
+		data.append('userImage', image)
+	}else{
+		data.append('userImage', "")
 	}
 
 	fetch(url, {
-		method: 'POST', // *GET, POST, PUT, DELETE, etc.
-		mode: 'cors', // no-cors, *cors, same-origin
-		cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-		credentials: 'same-origin', // include, *same-origin, omit
+		method: 'POST',
 		headers: {
-		  'Content-Type': 'application/json'
+			'Authorization': "Bearer " + bearer,
+			'Accept': '*/*',
 		},
-		redirect: 'follow', // manual, *follow, error
-		referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-		body: JSON.stringify(body) // body data type must match "Content-Type" header
+		body: data // body data type must match "Content-Type" header
 	  })
 	.then((json: any) => {
 		
@@ -80,10 +85,11 @@ export const DELETE = (endpoint: string, onSuccess: any, onFailure: any) => {
 export const PATCH = (endpoint: any, onSuccess: any, onFailure: any) => {
 	const cookies = new Cookies();
 
+	onSuccess(true)
+
 	request.patch(endpoint)
 		.set('Content-Type', 'application/json')
 		.set('Cookie', [
-			'username=' + cookies.get('username'),
 			'token=' + cookies.get('token')
 		])
 		.then((success: any) => {
@@ -91,6 +97,7 @@ export const PATCH = (endpoint: any, onSuccess: any, onFailure: any) => {
 			console.log(success)
 		}, (failure: any) => {
 			// Fail, was machen wir? 
+			onSuccess(false)
 			console.error(failure)
 		});
 }
