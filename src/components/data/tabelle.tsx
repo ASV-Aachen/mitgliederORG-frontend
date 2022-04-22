@@ -26,7 +26,6 @@ import {
 } from 'carbon-components-react';
 
 import { transformData, UserData } from '../interface/UserData';
-import { testdata } from './testdata';
 import { NewUser_StateManager } from '../formular/newUser';
 import { person } from '../interface/person';
 import { PATCH, POST } from '../utils/connect';
